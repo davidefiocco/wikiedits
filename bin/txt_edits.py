@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/env python
 
 import sys, os
 import argparse
@@ -28,8 +28,8 @@ def main():
     edits = EditExtractor(lang=args.language,
                           min_words=args.min_words,
                           max_words=args.max_words,
-                          length_diff=args.length_diff,
-                          edit_ratio=args.edit_ratio)
+                          max_length_diff=args.max_length_diff,
+                          max_edit_ratio=args.max_edit_ratio)
 
     if args.tabify:
         output = "{old}\t{new}"

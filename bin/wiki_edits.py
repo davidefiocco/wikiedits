@@ -16,7 +16,6 @@ sys.path.insert(1, os.path.join(sys.path[0], '..'))
 from wikiedits.wiki_edit_extractor import WikiEditExtractor
 from wikiedits import LANGUAGES
 
-
 def main():
     args = parse_user_args()
 
@@ -27,8 +26,8 @@ def main():
                              lang=args.language,
                              min_words=args.min_words,
                              max_words=args.max_words,
-                             length_diff=args.length_diff,
-                             edit_ratio=args.edit_ratio,
+                             max_length_diff=args.max_length_diff,
+                             max_edit_ratio=args.max_edit_ratio,
                              min_chars=args.min_chars)
 
     if args.tabify:
@@ -46,9 +45,13 @@ def main():
         out = open(args.output, 'w')
 
     for edits, meta in wiki.extract_edits():
+        
+        print meta
+        
         if args.meta_data and edits:
             out.write(format_meta_data(meta) + "\n")
-
+        
+        # this where things get written to screen
         for (old_edit, new_edit, scores) in edits:
             out.write(output.format(old=old_edit.encode('utf-8'),
                       new=new_edit.encode('utf-8'),
@@ -94,10 +97,10 @@ def parse_user_args():
                        help="set minimum length of sentence in words")
     group.add_argument("--max-words", type=int, default=120,
                        help="set maximum length of sentence in words")
-    group.add_argument("--length-diff", type=int, default=4,
+    group.add_argument("--max-length-diff", type=int, default=4,
                        help="set maximum difference in length between " \
                             "edited sentences")
-    group.add_argument("--edit-ratio", type=float, default=0.3,
+    group.add_argument("--max-edit-ratio", type=float, default=0.3,
                        help="set maximum relative difference in edit " \
                             "distance")
 
@@ -112,7 +115,6 @@ def set_logging_level(log_level):
     if log_level is not None:
         numeric_level = getattr(logging, log_level.upper(), None)
         logging.basicConfig(level=numeric_level)
-
 
 if __name__ == "__main__":
     main()

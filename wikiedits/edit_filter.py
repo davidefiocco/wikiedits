@@ -9,15 +9,14 @@ import math
 import logging
 log = logging.getLogger(__name__)
 
-
 class EditFilter(object):
 
     def __init__(self,
                  lang='english',
                  min_words=3,
                  max_words=120,
-                 length_diff=4,
-                 edit_ratio=0.3,
+                 max_length_diff=4,
+                 max_edit_ratio=0.3,
                  min_chars=10):
 
         self.segmenter = nltk.data.load('tokenizers/punkt/%s.pickle' % lang)
@@ -27,8 +26,8 @@ class EditFilter(object):
         self.MIN_TEXT_LENGTH = min_chars                # in characters
         self.MIN_WORDS_IN_SENTENCE = min_words          # in words
         self.MAX_WORDS_IN_SENTENCE = max_words          # in words
-        self.MAX_LENGTH_DIFF = length_diff              # on words
-        self.MAX_LEVENSHTEIN_RATIO = edit_ratio         # on words
+        self.MAX_LENGTH_DIFF = max_length_diff              # on words
+        self.MAX_LEVENSHTEIN_RATIO = max_edit_ratio         # on words
 
     def filter_edits(self, old_text, new_text):
         log.debug("processing texts:\n  >>> %s\n  >>> %s", old_text, new_text)
